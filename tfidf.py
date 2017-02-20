@@ -11,7 +11,7 @@ import copy
 def user2Uni():
     D = {}
     l1 = [];l2 = []
-    for line in open('/Users/xinglinzi/desktop/pickedFollowers(2500).txt'):
+    for line in open(''):
 
         l = line.strip().split(' ')
         if len(l) == 1:
@@ -36,7 +36,7 @@ def content():
     c = 0
     holder = ''
     user_str = ''
-    for line in open('/users/xinglinzi/desktop/ISdata/Tweetsss(2500).txt'):
+    for line in open(''):
         if 'xlz1015ahmj0923' in line:
             c += 1
             #print(c)
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
     friendDict = {}
     hold = ''
-    for line in open('/users/xinglinzi/desktop/ISdata/TestObj.txt'):
+    for line in open(''):
         if ':' in line:
             l = line.strip()
             hold = l[:-1]
