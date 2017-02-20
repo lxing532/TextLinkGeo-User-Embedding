@@ -10,10 +10,10 @@ import tweepy
 def auth_api():
     key_tokens = {}
 
-    key_tokens['consumer_key'] = 'TFZv5sCQELw26igM7YMXFCPpc'
-    key_tokens['consumer_secret'] = 'KJg0kLyTGHgUs75ee7TDzejrPly6H4EoxRa4rqiSg98qbyjzHp'
-    key_tokens['access_token'] = '4741698912-eZA8AffNHPujzTfMXxorcLjFdWmmF2C51tPeVNG'
-    key_tokens['access_secret'] = 'uaXae4Qc0TAgi6BNDEIjpcmg2KGgHuAKpG9sd6iKVpmoq'
+    key_tokens['consumer_key'] = ''
+    key_tokens['consumer_secret'] = ''
+    key_tokens['access_token'] = ''
+    key_tokens['access_secret'] = ''
 
     auth_twitter = tweepy.OAuthHandler(key_tokens['consumer_key'],key_tokens['consumer_secret'])
     auth_twitter.set_access_token(key_tokens['access_token'],key_tokens['access_secret'])
@@ -24,7 +24,7 @@ def auth_api():
 def user2Uni():
     D = {}
     l1 = [];l2 = []
-    for line in open('/Users/xinglinzi/desktop/pickedFollowers(2500).txt'):
+    for line in open(''):
 
         l = line.strip().split(' ')
         if len(l) == 1:
@@ -62,7 +62,7 @@ def content():
     c = 0
     holder = ''
     user_str = ''
-    for line in open('/users/xinglinzi/desktop/ISdata/Tweetsss(2500).txt'):
+    for line in open(''):
         if 'xlz1015ahmj0923' in line:
             c += 1
             #print(c)
@@ -150,7 +150,7 @@ if __name__ == '__main__':
 ######################################################################
     friendDict = {}
     hold = ''
-    for line in open('/users/xinglinzi/desktop/ISdata/TestObj.txt'):
+    for line in open(''):
         if ':' in line:
             l = line.strip()
             hold = l[:-1]
@@ -198,94 +198,6 @@ if __name__ == '__main__':
     print(sum(precision)/62)
     print(sum(MMR)/62)
 ######################################################################
-    '''
-    for i in range(100):
-        doc_id = np.random.randint(model.docvecs.count)
-
-        sims = model.docvecs.most_similar(doc_id, topn=model.docvecs.count)
-        print('TARGET' , all_docs[doc_id].words)
-        count = 0
-
-        D = user2Uni()
-        uni = userList[doc_id]
-        U = D[uni]
-        print(U)
-
-        resList = []
-        for i in sims:
-            if count == 50:
-                break
-            #pid = int(string.replace(i[0], "SEN_", ""))
-            #print(i[0],": ", all_docs[pid].words)
-            num = i[0]
-            numeric = int(num[4:])
-            print(i[0],userList[numeric],D[userList[numeric]])
-            res = D[userList[numeric]]
-            for j in res:
-                resList.append(j)
-            count += 1
-        result = Counter(resList)
-        index = U[0]
-        tp = float(result[index])/50
-        precision.append(tp)
-
-        resList = []
-        for i in sims:
-            tr = 0
-            if count == 50:
-                break
-            #pid = int(string.replace(i[0], "SEN_", ""))
-            #print(i[0],": ", all_docs[pid].words)
-            num = i[0]
-            numeric = int(num[4:])
-            print(i[0],userList[numeric],D[userList[numeric]])
-            so, ta = api_twitter.show_friendship(source_id=int(userList[doc_id]),target_id=int(userList[numeric]))
-            print(ta.followed_by)
-            if ta.followed_by == True:
-                tr += 1
-            count += 1
-
-        tp = float(tr)/50
-        print(tp)
-        precision.append(tp)
-    print(sum(precision)/100)
-
-
-vec1_list = [];vec2_list = [];vec3_list = [];vec4_list = []
-for i in range(10):
-    vec1_list.append(model.docvecs[i])
-for i in range(10,20):
-    vec2_list.append(model.docvecs[i])
-for i in range(20,30):
-    vec3_list.append(model.docvecs[i])
-for i in range(30,40):
-    vec4_list.append(model.docvecs[i])
-count = 0
-
-v1 = 0;v2 = 0;v3 = 0;v4 = 0
-
-for j in range(10):
-    v1 += vec1_list[j]
-for j in range(10):
-    v2 += vec2_list[j]
-for j in range(10):
-    v3 += vec3_list[j]
-for j in range(10):
-    v4 += vec4_list[j]
-
-v1 = model.docvecs[0]
-v2 = model.docvecs[1]
-v3 = model.docvecs[2]
-v4 = model.docvecs[3]
-
-print(cosSimilar(v1,v2))
-print(cosSimilar(v1,v3))
-print(cosSimilar(v1,v4))
-print(cosSimilar(v2,v3))
-print(cosSimilar(v2,v4))
-print(cosSimilar(v3,v4))
-'''
-
-
+ 
 
 
