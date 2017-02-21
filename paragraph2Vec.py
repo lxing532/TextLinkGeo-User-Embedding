@@ -114,38 +114,63 @@ def content():
         sen = ''.join(ch for ch in sen if ch not in exclude)
         all_docs.append(LabelDoc(sen.split(),tag))
     print(len(userList),len(data_list))
+
     return all_docs, userList
 
 
-def relation():
-    LabelDoc = namedtuple('LabelDoc','words tags')
-    f1 = ['1','12','22','45','668','324','556','1208','1111019','32423840','42423525']
-    f2 = ['1111019','1208','42423525','40414729','401840','401984','480180198','83018','13890918']
-    f3 = ['1','45','924701924','41098','849018','8301','840184','72981','8019','89742374','74759']
-    f4 = ['1','8301','72981','94810','7412940','20793','32090820','719','7427974']
-    big = []
-    big.append(f1)
-    big.append(f2)
-    big.append(f3)
-    big.append(f4)
-    all_docs = []
-    for i in range(4):
-        tag = ['SEN_'+str(i)]
-        all_docs.append(LabelDoc(big[i],tag))
+def addRelation(all_docs,userList):
+
+    nameDict = {}
+    holder = ''
+    for line in open(''):
+        line = line.strip()
+        s = ''
+        if line != '' and line[-1] == ':':
+            for ch in line:
+                if ch == ' ':
+                    holder = s
+                    break
+                s += ch
+            nameDict[holder] = []
+        else:
+            pre = ''
+            ss = ''
+            for ch in line:
+                if pre == '|':
+                    if ch == '|':
+                        ss = ss[2:]
+                        ss = ss[:-2]
+                        nameDict[holder].append(ss)
+                        break
+                    ss += ch
+                else:
+                    pre = ch
+    keyList = list(nameDict.keys())
+    for i in range(len(userList)):
+        if userList[i] in keyList:
+            l = nameDict[userList[i]]
+            all_docs[i].words.append('USR')
+            for name in l:
+                all_docs[i].words.append('USR')
+                all_docs[i].words.append(name)
+                all_docs[i].words.append('USR')
+            all_docs[i].words.append('USR')
     return all_docs
 
 if __name__ == '__main__':
     api_twitter = auth_api()
     all_docs, userList = content()
+    newall_docs = addRelation(all_docs,userList)
     model = doc2vec.Doc2Vec(size=75, window=1, alpha=0.025,min_alpha=0.025, min_count=5)
-    model.build_vocab(all_docs)
+    model.build_vocab(newall_docs)
     for epoch in range(10):
-        model.train(all_docs)
+        model.train(newall_docs)
         model.alpha -= 0.002
         model.min_alpha = model.alpha
 
     model.save('model.doc2vec')
     precision = []
+    recall = []
     MMR = []
 ######################################################################
     friendDict = {}
@@ -159,18 +184,18 @@ if __name__ == '__main__':
     print(len(friendDict))
 
 
-    indexList = [877, 683, 807, 924, 115, 321, 909, 318, 855, 775, 919, 896, 938, 1041, 57, 333, 96, 146, 259, 300, 843, 581, 455, 496, 358, 440, 166, 689, 850, 853, 604, 365, 1006, 564, 553, 558, 876, 88, 176, 466, 337, 232, 769, 39, 114, 552, 832, 188, 656, 854, 914, 282, 554, 204, 20, 47, 207, 294, 785, 386, 95, 682]
+    indexList = [875, 681, 805, 922, 115, 320, 907, 317, 853, 773, 917, 894, 935, 1038, 57, 332, 96, 146, 258, 299, 841, 579, 453, 494, 357, 438, 165, 687, 848, 851, 602, 364, 1003, 562, 551, 556, 874, 88, 175, 464, 336, 231, 767, 39, 114, 550, 830, 187, 654, 852, 912, 281, 552, 203, 20, 47, 206, 293, 783, 385, 95, 680]
     for i in indexList:
         mmr = 0
         doc_id = i
         count = 0
         c = 0
         sims = model.docvecs.most_similar(doc_id, topn=model.docvecs.count)
-        print('TARGET' , all_docs[doc_id].words)
+        print('TARGET' , newall_docs[doc_id].words)
         candident = []
         resList = []
         for j in sims:
-            if count == 10:
+            if count == 60:
                 break
             #pid = int(string.replace(i[0], "SEN_", ""))
             #print(i[0],": ", all_docs[pid].words)
@@ -188,16 +213,22 @@ if __name__ == '__main__':
                 c += 1
                 print(count)
                 mmr += float(1)/order
-        tp = float(c)/10
+        tp = float(c)/60
+        re = float(c)/len(trueList)
         precision.append(tp)
+        recall.append(re)
         if c != 0:
             MMR.append(mmr/c)
             print(mmr,c)
             print(mmr/c)
         print(tp)
+        print(re)
     print(sum(precision)/62)
+    print(sum(recall)/62)
     print(sum(MMR)/62)
-######################################################################
- 
+
+
+
+
 
 
